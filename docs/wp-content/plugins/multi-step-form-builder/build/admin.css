@@ -1,0 +1,272 @@
+/* Admin Styles for Multi-Step Form Builder */
+
+.msf-form-builder {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.msf-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.msf-builder-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.msf-tabs {
+    margin-top: 20px;
+}
+
+.msf-tabs .components-tab-panel__tabs {
+    border-bottom: 1px solid #ddd;
+}
+
+.msf-steps-panel {
+    padding: 20px 0;
+}
+
+.msf-step-wrapper {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.msf-step-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.msf-step-number {
+    font-weight: 600;
+    font-size: 14px;
+    color: #2271b1;
+}
+
+.msf-step-move-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.msf-step-editor {
+    background: #fff;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.msf-step-header {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.msf-step-header .components-base-control {
+    flex: 1;
+}
+
+.msf-fields-list h4 {
+    margin: 20px 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.msf-field-item {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.msf-field-editor {
+    background: #f0f0f1;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.msf-field-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    transition: background 0.2s;
+}
+
+.msf-field-header:hover {
+    background: #f9f9f9;
+}
+
+.msf-field-type-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.msf-field-label {
+    flex: 1;
+    font-weight: 500;
+}
+
+.msf-field-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.msf-toggle-btn.expanded svg {
+    transform: rotate(180deg);
+}
+
+.msf-field-config {
+    padding: 15px;
+    background: #fff;
+}
+
+.msf-field-config .components-base-control {
+    margin-bottom: 15px;
+}
+
+.msf-options-editor {
+    margin: 15px 0;
+}
+
+.msf-option-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
+
+.msf-option-row .components-base-control {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.msf-add-field {
+    margin-top: 20px;
+}
+
+.msf-field-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.msf-field-type-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.msf-field-type-btn:hover {
+    border-color: #2271b1;
+    background: #f0f6fc;
+}
+
+.msf-field-type-btn .msf-field-type-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.msf-field-type-btn .msf-field-type-label {
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.msf-empty-message,
+.msf-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.msf-add-step-btn {
+    margin-top: 20px;
+}
+
+.msf-form-settings .components-panel__body {
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+/* Submissions List */
+.msf-submissions-list {
+    background: #fff;
+    padding: 20px;
+}
+
+.msf-submissions-header {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.msf-submissions-header .components-base-control {
+    flex: 1;
+    max-width: 300px;
+}
+
+.msf-submission-details {
+    padding: 20px;
+}
+
+.msf-submission-details table {
+    margin-top: 15px;
+}
+
+.msf-submission-details th {
+    text-align: left;
+    padding: 10px;
+    background: #f0f0f1;
+    font-weight: 600;
+}
+
+.msf-submission-details td {
+    padding: 10px;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+    .msf-field-types-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .msf-step-header {
+        flex-direction: column;
+    }
+    
+    .msf-submissions-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .msf-submissions-header .components-base-control {
+        max-width: 100%;
+    }
+}
+
