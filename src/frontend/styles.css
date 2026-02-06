@@ -436,3 +436,36 @@
     font-size: 24px;
   }
 }
+
+/* Error Message */
+.msf-form-error {
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.msf-error-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d63638;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 40px;
+  animation: scaleIn 0.5s ease;
+}
+
+.msf-form-error h3 {
+  font-size: 28px;
+  margin: 0 0 10px;
+  color: #1e1e1e;
+}
+
+.msf-form-error p {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+}

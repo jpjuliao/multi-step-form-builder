@@ -12,6 +12,7 @@ const MultiStepForm = ({ formId, onSuccess }) => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     loadForm();
@@ -32,6 +33,11 @@ const MultiStepForm = ({ formId, onSuccess }) => {
   };
 
   const validateStep = () => {
+    // Skip validation for the final step (Finish step)
+    if (currentStep >= formConfig.steps.length) {
+      return true;
+    }
+
     const step = formConfig.steps[currentStep];
     const stepErrors = {};
 
@@ -68,7 +74,9 @@ const MultiStepForm = ({ formId, onSuccess }) => {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    e.preventDefault();
+    console.log('handleNext', currentStep, validateStep());
     if (validateStep()) {
       setCurrentStep(currentStep + 1);
       setErrors({});
@@ -87,6 +95,7 @@ const MultiStepForm = ({ formId, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('handleSubmit', currentStep, validateStep());
 
     if (!validateStep()) {
       // Scroll to top to show validation errors
@@ -104,6 +113,9 @@ const MultiStepForm = ({ formId, onSuccess }) => {
 
       setSuccessMessage(response.message);
       setSubmitted(true);
+      setHasError(false);
+      // Move to the final step (Finish step)
+      setCurrentStep(formConfig.steps.length);
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
       // Call onSuccess callback if provided (for modal close)
@@ -115,18 +127,26 @@ const MultiStepForm = ({ formId, onSuccess }) => {
 
       if (error.data?.errors) {
         setErrors(error.data.errors);
+        setSuccessMessage('Please correct the errors and try again.');
       } else {
-        alert('An error occurred while submitting the form. Please try again.');
+        setSuccessMessage(error.message || 'An error occurred while submitting the form. Please try again.');
       }
+
+      setHasError(true);
+      // Move to the final step (Finish step) on error too, or stay?
+      // User request: "step to display the Thank you message or Errors"
+      // So we move to the final step to show the error.
+      setCurrentStep(formConfig.steps.length);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleFormKeyDown = (e) => {
-    // Prevent Enter key from submitting the form unless on the last step
-    const isLastStep = currentStep === formConfig.steps.length - 1;
-    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !isLastStep) {
+    // Prevent Enter key from submitting the form unless on the last input step
+    const isLastFormStep = currentStep === formConfig.steps.length - 1;
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !isLastFormStep) {
       e.preventDefault();
       // Trigger next button click instead
       handleNext();
@@ -154,76 +174,111 @@ const MultiStepForm = ({ formId, onSuccess }) => {
     return <p>Form not found or has no steps.</p>;
   }
 
-  if (submitted) {
-    return (
-      <div className="msf-form-success">
-        <div className="msf-success-icon">✓</div>
-        <h3>Success!</h3>
-        <p>{successMessage}</p>
-      </div>
-    );
+  if (submitted && currentStep < formConfig.steps.length) {
+    // Fallback if somehow submitted but not on final step, shouldn't happen with new logic but good safety
+    // Actually, we want to render the virtual step.
   }
 
-  const step = formConfig.steps[currentStep];
+  // Create a virtual final step
+  const allSteps = [
+    ...formConfig.steps,
+    {
+      title: 'Finish',
+      description: '',
+      fields: []
+    }
+  ];
+
   const settings = formConfig.settings || {};
-  const isLastStep = currentStep === formConfig.steps.length - 1;
+  const isLastFormStep = currentStep === formConfig.steps.length - 1;
+  const isFinalStep = currentStep === formConfig.steps.length;
 
   return (
     <div className="msf-form-wrapper">
       <ProgressBar
         currentStep={currentStep}
-        totalSteps={formConfig.steps.length}
-        steps={formConfig.steps}
+        totalSteps={allSteps.length}
+        steps={allSteps}
       />
 
-      <form onSubmit={handleSubmit} onKeyDown={handleFormKeyDown} className="msf-form">
+      {isFinalStep ? (
         <div className="msf-step-content">
-          {step.title && <h3 className="msf-step-title">{step.title}</h3>}
-          {step.description && <p className="msf-step-description">{step.description}</p>}
-
-          <div className="msf-fields">
-            {step.fields?.map((field, index) => (
-              <FormField
-                key={field.name || index}
-                field={field}
-                value={formData[field.name]}
-                onChange={(value) => updateFieldValue(field.name, value)}
-                error={errors[field.name]}
-              />
-            ))}
+          <div className={`msf-form-${hasError ? 'error' : 'success'}`}>
+            <div className={`msf-${hasError ? 'error' : 'success'}-icon`}>
+              {hasError ? '✕' : '✓'}
+            </div>
+            <h3>{hasError ? 'Error' : 'Success!'}</h3>
+            <p>{successMessage}</p>
+            {hasError && Object.keys(errors).length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCurrentStep(formConfig.steps.length - 1);
+                  setSubmitted(false);
+                  setHasError(false);
+                }}
+                className="msf-btn msf-btn-primary"
+                style={{ marginTop: '20px' }}
+              >
+                Go Back
+              </button>
+            )}
           </div>
         </div>
+      ) : (
+        <form onSubmit={handleSubmit} onKeyDown={handleFormKeyDown} className="msf-form">
+          <div className="msf-step-content">
+            {formConfig.steps[currentStep].title && (
+              <h3 className="msf-step-title">{formConfig.steps[currentStep].title}</h3>
+            )}
+            {formConfig.steps[currentStep].description && (
+              <p className="msf-step-description">{formConfig.steps[currentStep].description}</p>
+            )}
 
-        <div className="msf-form-navigation">
-          {currentStep > 0 && (
-            <button
-              type="button"
-              onClick={handlePrevious}
-              className="msf-btn msf-btn-secondary"
-            >
-              {settings.previousButtonText || 'Previous'}
-            </button>
-          )}
+            <div className="msf-fields">
+              {formConfig.steps[currentStep].fields?.map((field, index) => (
+                <FormField
+                  key={field.name || index}
+                  field={field}
+                  value={formData[field.name]}
+                  onChange={(value) => updateFieldValue(field.name, value)}
+                  error={errors[field.name]}
+                />
+              ))}
+            </div>
+          </div>
 
-          {!isLastStep ? (
-            <button
-              type="button"
-              onClick={handleNext}
-              className="msf-btn msf-btn-primary"
-            >
-              {settings.nextButtonText || 'Next'}
-            </button>
-          ) : (
-            <button
-              type="submit"
-              disabled={submitting}
-              className="msf-btn msf-btn-primary"
-            >
-              {submitting ? 'Submitting...' : (settings.submitButtonText || 'Submit')}
-            </button>
-          )}
-        </div>
-      </form>
+          <div className="msf-form-navigation">
+            {currentStep > 0 && (
+              <button
+                type="button"
+                onClick={handlePrevious}
+                className="msf-btn msf-btn-secondary"
+              >
+                {settings.previousButtonText || 'Previous'}
+              </button>
+            )}
+
+            {!isLastFormStep ? (
+              <button
+                type="button"
+                onClick={handleNext}
+                className="msf-btn msf-btn-primary"
+              >
+                {settings.nextButtonText || 'Next'}
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={submitting}
+                className="msf-btn msf-btn-primary"
+              >
+                {submitting ? 'Submitting...' : (settings.submitButtonText || 'Submit')}
+              </button>
+            )}
+          </div>
+        </form>
+      )}
     </div>
   );
 };
