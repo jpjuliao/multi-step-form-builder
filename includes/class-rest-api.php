@@ -87,7 +87,7 @@ class REST_API
   public function save_form($request)
   {
     $form_id = $request->get_param('id');
-    $form_config = $request->get_json_params();
+    $form_config = json_encode($request->get_json_params());
 
     update_post_meta($form_id, '_msf_form_config', $form_config);
 

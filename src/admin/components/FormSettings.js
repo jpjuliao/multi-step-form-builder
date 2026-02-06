@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { TextControl, TextareaControl, PanelBody } from '@wordpress/components';
+import { TextControl, TextareaControl, PanelBody, ToggleControl } from '@wordpress/components';
 
 const FormSettings = ({ settings, onUpdate }) => {
   const updateSetting = (key, value) => {
@@ -33,6 +33,26 @@ const FormSettings = ({ settings, onUpdate }) => {
           onChange={(value) => updateSetting('successMessage', value)}
           rows={3}
         />
+      </PanelBody>
+
+      <PanelBody title={__('Display Conditions', 'multi-step-form-builder')} initialOpen={false}>
+        <ToggleControl
+          label={__('Show in Modal on Page Load', 'multi-step-form-builder')}
+          checked={settings.showModalOnLoad || false}
+          onChange={(value) => updateSetting('showModalOnLoad', value)}
+          help={__('Display the form in a modal popup when the page loads', 'multi-step-form-builder')}
+        />
+        {settings.showModalOnLoad && (
+          <TextControl
+            label={__('Delay (seconds)', 'multi-step-form-builder')}
+            type="number"
+            value={settings.modalDelay || 0}
+            onChange={(value) => updateSetting('modalDelay', parseInt(value) || 0)}
+            help={__('Delay before showing the modal (0 for immediate)', 'multi-step-form-builder')}
+            min={0}
+            max={60}
+          />
+        )}
       </PanelBody>
     </div>
   );

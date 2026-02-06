@@ -3,7 +3,7 @@ import apiFetch from '@wordpress/api-fetch';
 import FormField from './FormField';
 import ProgressBar from './ProgressBar';
 
-const MultiStepForm = ({ formId }) => {
+const MultiStepForm = ({ formId, onSuccess }) => {
   const [formConfig, setFormConfig] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
@@ -23,7 +23,7 @@ const MultiStepForm = ({ formId }) => {
       const response = await apiFetch({
         path: `/msf/v1/forms/${formId}`,
       });
-      setFormConfig(response);
+      setFormConfig(JSON.parse(response));
     } catch (error) {
       console.error('Error loading form:', error);
     } finally {
@@ -100,6 +100,11 @@ const MultiStepForm = ({ formId }) => {
       setSuccessMessage(response.message);
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Call onSuccess callback if provided (for modal close)
+      if (onSuccess) {
+        setTimeout(() => onSuccess(), 2000); // Close modal after 2 seconds
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
 
@@ -129,6 +134,9 @@ const MultiStepForm = ({ formId }) => {
       </div>
     );
   }
+
+  window.formConfig = formConfig;
+  console.log(window.formConfig);
 
   if (!formConfig || !formConfig.steps || formConfig.steps.length === 0) {
     return <p>Form not found or has no steps.</p>;
