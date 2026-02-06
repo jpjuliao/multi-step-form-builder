@@ -73,6 +73,9 @@ const MultiStepForm = ({ formId, onSuccess }) => {
       setCurrentStep(currentStep + 1);
       setErrors({});
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Scroll to top to show validation errors
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -86,6 +89,8 @@ const MultiStepForm = ({ formId, onSuccess }) => {
     e.preventDefault();
 
     if (!validateStep()) {
+      // Scroll to top to show validation errors
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
@@ -115,6 +120,16 @@ const MultiStepForm = ({ formId, onSuccess }) => {
       }
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleFormKeyDown = (e) => {
+    // Prevent Enter key from submitting the form unless on the last step
+    const isLastStep = currentStep === formConfig.steps.length - 1;
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !isLastStep) {
+      e.preventDefault();
+      // Trigger next button click instead
+      handleNext();
     }
   };
 
@@ -161,7 +176,7 @@ const MultiStepForm = ({ formId, onSuccess }) => {
         steps={formConfig.steps}
       />
 
-      <form onSubmit={handleSubmit} className="msf-form">
+      <form onSubmit={handleSubmit} onKeyDown={handleFormKeyDown} className="msf-form">
         <div className="msf-step-content">
           {step.title && <h3 className="msf-step-title">{step.title}</h3>}
           {step.description && <p className="msf-step-description">{step.description}</p>}
