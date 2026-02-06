@@ -1,7 +1,6 @@
 /* Frontend Styles for Multi-Step Forms */
 
 .msf-form-wrapper {
-  max-width: 800px;
   margin: 0 auto;
   padding: 30px;
   background: #fff;
@@ -376,7 +375,6 @@
   max-width: 900px;
   width: 100%;
   max-height: 90vh;
-  overflow-y: auto;
   animation: slideUp 0.4s ease;
 }
 
