@@ -196,11 +196,6 @@ const MultiStepForm = ({ formId, onSuccess }) => {
 
   return (
     <div className="msf-form-wrapper">
-      <ProgressBar
-        currentStep={currentStep}
-        totalSteps={allSteps.length}
-        steps={allSteps}
-      />
 
       <FormHeader formConfig={formConfig} />
 
@@ -210,8 +205,10 @@ const MultiStepForm = ({ formId, onSuccess }) => {
             <div className={`msf-${hasError ? 'error' : 'success'}-icon`}>
               {hasError ? '✕' : '✓'}
             </div>
-            <h3>{hasError ? 'Error' : 'Success!'}</h3>
-            <p>{successMessage}</p>
+            <div className="msf-form-message">
+              <h3>{hasError ? 'Error' : 'Success!'}</h3>
+              <p>{successMessage}</p>
+            </div>
             {hasError && Object.keys(errors).length > 0 && (
               <button
                 type="button"
@@ -282,6 +279,12 @@ const MultiStepForm = ({ formId, onSuccess }) => {
           </div>
         </form>
       )}
+
+      <ProgressBar
+        currentStep={currentStep}
+        totalSteps={allSteps.length}
+        steps={allSteps}
+      />
     </div>
   );
 };
