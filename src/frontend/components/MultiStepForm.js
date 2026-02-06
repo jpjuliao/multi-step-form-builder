@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import FormField from './FormField';
 import ProgressBar from './ProgressBar';
@@ -14,6 +14,18 @@ const MultiStepForm = ({ formId, onSuccess }) => {
   const [submitted, setSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [hasError, setHasError] = useState(false);
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    if (formRef.current) {
+      // Find the first focusable element in the form
+      const firstInput = formRef.current.querySelector('input, select, textarea');
+      if (firstInput) {
+        firstInput.focus();
+      }
+    }
+  }, [currentStep]);
+
 
   useEffect(() => {
     loadForm();
@@ -76,7 +88,7 @@ const MultiStepForm = ({ formId, onSuccess }) => {
   };
 
   const handleNext = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     console.log('handleNext', currentStep, validateStep());
     if (validateStep()) {
       setCurrentStep(currentStep + 1);
@@ -195,7 +207,7 @@ const MultiStepForm = ({ formId, onSuccess }) => {
   const isFinalStep = currentStep === formConfig.steps.length;
 
   return (
-    <div className="msf-form-wrapper">
+    <div className="msf-form-wrapper" ref={formRef}>
 
       <FormHeader formConfig={formConfig} />
 
