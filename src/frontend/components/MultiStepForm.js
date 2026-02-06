@@ -23,7 +23,7 @@ const MultiStepForm = ({ formId, onSuccess }) => {
       const response = await apiFetch({
         path: `/msf/v1/forms/${formId}`,
       });
-      setFormConfig(JSON.parse(response));
+      setFormConfig(response);
     } catch (error) {
       console.error('Error loading form:', error);
     } finally {
@@ -134,9 +134,6 @@ const MultiStepForm = ({ formId, onSuccess }) => {
       </div>
     );
   }
-
-  window.formConfig = formConfig;
-  console.log(window.formConfig);
 
   if (!formConfig || !formConfig.steps || formConfig.steps.length === 0) {
     return <p>Form not found or has no steps.</p>;

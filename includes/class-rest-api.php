@@ -66,7 +66,12 @@ class REST_API
 
     $form_config = get_post_meta($form_id, '_msf_form_config', true);
 
-    if (empty($form_config)) {
+    // Handle both JSON string and array formats
+    if (is_string($form_config)) {
+      $form_config = json_decode($form_config, true);
+    }
+
+    if (empty($form_config) || !is_array($form_config)) {
       $form_config = array(
         'steps' => array(),
         'settings' => array(
@@ -113,6 +118,11 @@ class REST_API
 
     // Get form configuration for validation
     $form_config = get_post_meta($form_id, '_msf_form_config', true);
+
+    // Decode if it's a JSON string
+    if (is_string($form_config)) {
+      $form_config = json_decode($form_config, true);
+    }
 
     // Validate required fields
     $errors = $this->validate_submission($data, $form_config);

@@ -35,7 +35,7 @@ const FormSettings = ({ settings, onUpdate }) => {
         />
       </PanelBody>
 
-      <PanelBody title={__('Display Conditions', 'multi-step-form-builder')} initialOpen={false}>
+      <PanelBody title={__('Display Conditions', 'multi-step-form-builder')} initialOpen={true}>
         <ToggleControl
           label={__('Show in Modal on Page Load', 'multi-step-form-builder')}
           checked={settings.showModalOnLoad || false}
