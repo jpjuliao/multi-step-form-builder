@@ -4,6 +4,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { Button, Spinner, TabPanel, Notice } from '@wordpress/components';
 import StepEditor from './StepEditor';
 import FormSettings from './FormSettings';
+import FormHeader from './FormHeader';
 
 const FormBuilder = () => {
   const [formConfig, setFormConfig] = useState(null);
@@ -96,6 +97,11 @@ const FormBuilder = () => {
 
   const tabs = [
     {
+      name: 'header',
+      title: __('Header', 'multi-step-form-builder'),
+      className: 'msf-tab-header',
+    },
+    {
       name: 'steps',
       title: __('Steps', 'multi-step-form-builder'),
       className: 'msf-tab-steps',
@@ -136,6 +142,17 @@ const FormBuilder = () => {
         tabs={tabs}
       >
         {(tab) => {
+          if (tab.name === 'header') {
+            return (
+              <div className="msf-header-panel">
+                <FormHeader
+                  formConfig={formConfig}
+                  updateFormConfig={setFormConfig}
+                />
+              </div>
+            );
+          }
+
           if (tab.name === 'steps') {
             return (
               <div className="msf-steps-panel">

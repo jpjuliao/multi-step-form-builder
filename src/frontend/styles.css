@@ -1,4 +1,8 @@
 /* Frontend Styles for Multi-Step Forms */
+:root {
+  --step-dot-color: #F1C500;
+  --button-color: #22B712;
+}
 
 .msf-form-wrapper {
   margin: 0 auto;
