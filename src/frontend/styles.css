@@ -1,0 +1,355 @@
+/* Frontend Styles for Multi-Step Forms */
+
+.msf-form-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Bar */
+.msf-progress-container {
+  margin-bottom: 40px;
+}
+
+.msf-progress-bar {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.msf-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2271b1, #135e96);
+  transition: width 0.4s ease;
+}
+
+.msf-progress-steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.msf-progress-step {
+  flex: 1;
+  text-align: center;
+}
+
+.msf-progress-step-number {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.msf-progress-step.pending .msf-progress-step-number {
+  background: #e0e0e0;
+  color: #666;
+}
+
+.msf-progress-step.active .msf-progress-step-number {
+  background: #2271b1;
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(34, 113, 177, 0.2);
+}
+
+.msf-progress-step.completed .msf-progress-step-number {
+  background: #00a32a;
+  color: #fff;
+}
+
+.msf-progress-step-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.msf-progress-step.active .msf-progress-step-label {
+  color: #2271b1;
+  font-weight: 600;
+}
+
+/* Form Content */
+.msf-step-content {
+  margin-bottom: 30px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.msf-step-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: #1e1e1e;
+}
+
+.msf-step-description {
+  color: #666;
+  margin: 0 0 25px;
+  line-height: 1.6;
+}
+
+.msf-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.msf-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.msf-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #1e1e1e;
+  font-size: 14px;
+}
+
+.msf-required {
+  color: #d63638;
+  margin-left: 4px;
+}
+
+.msf-input,
+.msf-textarea,
+.msf-select {
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.msf-input:focus,
+.msf-textarea:focus,
+.msf-select:focus {
+  outline: none;
+  border-color: #2271b1;
+  box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.1);
+}
+
+.msf-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.msf-radio-group,
+.msf-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.msf-radio-label,
+.msf-checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.msf-radio-label:hover,
+.msf-checkbox-label:hover {
+  background: #f5f5f5;
+}
+
+.msf-radio-label input,
+.msf-checkbox-label input {
+  margin-right: 10px;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.msf-help-text {
+  font-size: 13px;
+  color: #666;
+  margin: 6px 0 0;
+  font-style: italic;
+}
+
+.msf-field-error .msf-input,
+.msf-field-error .msf-textarea,
+.msf-field-error .msf-select {
+  border-color: #d63638;
+}
+
+.msf-error-message {
+  color: #d63638;
+  font-size: 13px;
+  margin: 6px 0 0;
+  font-weight: 500;
+}
+
+/* Navigation Buttons */
+.msf-form-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.msf-btn {
+  padding: 12px 32px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.msf-btn-primary {
+  background: #2271b1;
+  color: #fff;
+  margin-left: auto;
+}
+
+.msf-btn-primary:hover:not(:disabled) {
+  background: #135e96;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(34, 113, 177, 0.3);
+}
+
+.msf-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.msf-btn-secondary {
+  background: #f0f0f1;
+  color: #1e1e1e;
+}
+
+.msf-btn-secondary:hover {
+  background: #dcdcde;
+}
+
+/* Loading State */
+.msf-form-loading {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.msf-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 20px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #2271b1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success Message */
+.msf-form-success {
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.msf-success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #00a32a;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 40px;
+  animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.msf-form-success h3 {
+  font-size: 28px;
+  margin: 0 0 10px;
+  color: #1e1e1e;
+}
+
+.msf-form-success p {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .msf-form-wrapper {
+    padding: 20px;
+  }
+
+  .msf-progress-steps {
+    flex-wrap: wrap;
+  }
+
+  .msf-progress-step {
+    min-width: 80px;
+  }
+
+  .msf-progress-step-label {
+    font-size: 11px;
+  }
+
+  .msf-step-title {
+    font-size: 20px;
+  }
+
+  .msf-form-navigation {
+    flex-direction: column;
+  }
+
+  .msf-btn {
+    width: 100%;
+  }
+
+  .msf-btn-primary {
+    margin-left: 0;
+    order: -1;
+  }
+}
