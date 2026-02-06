@@ -129,12 +129,14 @@
     line-height: var(--h2-line-height);
     color: var(--heading-font-color);
     font-weight: bold;
+    margin-bottom: 20px;
   }
 
   .msf-form-description {
     font-size: var(--body-main-font-size);
     line-height: var(--body-main-line-height);
     color: var(--body-font-color);
+    margin-bottom: 40px;
   }
 }
 
@@ -276,8 +278,6 @@
   display: flex;
   justify-content: flex-start;
   gap: 15px;
-  padding-top: 20px;
-  border-top: 1px solid var(--input-background-color);
 
   .msf-btn {
     padding: 12px 32px;
@@ -388,7 +388,7 @@
 .msf-form-error {
   display: flex;
   gap: 20px;
-  padding: 60px 20px;
+  padding: 40px 20px;
   animation: fadeIn 0.5s ease;
 
   .msf-error-icon {

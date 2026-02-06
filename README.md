@@ -6,9 +6,11 @@ A comprehensive WordPress plugin that allows you to create beautiful, multi-step
 
 ### Admin Interface
 - **Visual Form Builder**: React-based drag-and-drop interface for creating forms
+- **Form Header**: Custom title and description with toggle controls
 - **Multiple Field Types**: Text, email, textarea, select, radio, checkbox, number, phone, URL, and date fields
 - **Step Management**: Add, remove, and reorder steps easily
 - **Field Configuration**: Customize labels, placeholders, validation, help text, and more
+- **Display Settings**: Configure modal popup options (on load, with delay)
 - **Form Settings**: Configure button labels and success messages
 - **Submissions Management**: View, export (CSV), and delete form submissions
 

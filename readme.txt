@@ -17,14 +17,16 @@ Multi Step Form Builder allows you to create stunning multi-step forms with an i
 = Key Features =
 
 * **Visual Form Builder** - React-based drag-and-drop interface
+* **Form Layout** - Customizable form header with title and description
 * **10 Field Types** - Text, email, textarea, select, radio, checkbox, number, phone, URL, and date
 * **Step Management** - Add, remove, and reorder steps easily
 * **Progress Indicator** - Beautiful progress bar showing form completion
 * **Form Validation** - Client-side and server-side validation
+* **Display Options** - Embed inline or display in a modal popup on page load
 * **AJAX Submission** - No page reload on form submission
 * **Submissions Management** - View, export (CSV), and delete form submissions
 * **Responsive Design** - Mobile-friendly forms with smooth animations
-* **Customizable** - Configure button labels, success messages, and more
+* **Customizable** - Configure button labels, success messages, modal delay, and more
 
 = Field Types =
 
@@ -103,6 +105,10 @@ Yes! The shortcode works with all major page builders including Elementor, Beave
 = Can I make fields required? =
 
 Yes, each field has a "Required" toggle that you can enable to make it mandatory.
+
+= Can I show the form in a popup? =
+
+Yes, you can enable "Show in Modal on Page Load" in the Form Settings to automatically display the form in a popup when the page loads. You can also set a delay in seconds.
 
 == Screenshots ==
 
