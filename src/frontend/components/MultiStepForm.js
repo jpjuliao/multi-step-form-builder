@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import FormField from './FormField';
 import ProgressBar from './ProgressBar';
+import FormHeader from './FormHeader';
 
 const MultiStepForm = ({ formId, onSuccess }) => {
   const [formConfig, setFormConfig] = useState(null);
@@ -200,6 +201,8 @@ const MultiStepForm = ({ formId, onSuccess }) => {
         totalSteps={allSteps.length}
         steps={allSteps}
       />
+
+      <FormHeader formConfig={formConfig} />
 
       {isFinalStep ? (
         <div className="msf-step-content">
