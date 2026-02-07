@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { Button, Spinner, TabPanel, Notice } from '@wordpress/components';
-import StepEditor from './StepEditor';
-import FormSettings from './FormSettings';
-import FormHeader from './FormHeader';
+
+const StepEditor = lazy(() => import('./StepEditor'));
+const FormSettings = lazy(() => import('./FormSettings'));
+const FormHeader = lazy(() => import('./FormHeader'));
 
 const FormBuilder = () => {
   const [formConfig, setFormConfig] = useState(null);
@@ -141,76 +142,80 @@ const FormBuilder = () => {
         activeClass="is-active"
         tabs={tabs}
       >
-        {(tab) => {
-          if (tab.name === 'header') {
-            return (
-              <div className="msf-header-panel">
-                <FormHeader
-                  formConfig={formConfig}
-                  updateFormConfig={setFormConfig}
-                />
-              </div>
-            );
-          }
-
-          if (tab.name === 'steps') {
-            return (
-              <div className="msf-steps-panel">
-                {formConfig.steps?.length > 0 ? (
-                  formConfig.steps.map((step, index) => (
-                    <div key={step.id || index} className="msf-step-wrapper">
-                      <div className="msf-step-controls">
-                        <span className="msf-step-number">
-                          {__('Step', 'multi-step-form-builder')} {index + 1}
-                        </span>
-                        <div className="msf-step-move-buttons">
-                          {index > 0 && (
-                            <Button
-                              icon="arrow-up"
-                              onClick={() => moveStep(index, index - 1)}
-                              label={__('Move Up', 'multi-step-form-builder')}
-                              isSmall
-                            />
-                          )}
-                          {index < formConfig.steps.length - 1 && (
-                            <Button
-                              icon="arrow-down"
-                              onClick={() => moveStep(index, index + 1)}
-                              label={__('Move Down', 'multi-step-form-builder')}
-                              isSmall
-                            />
-                          )}
-                        </div>
-                      </div>
-                      <StepEditor
-                        step={step}
-                        stepIndex={index}
-                        onUpdate={(updatedStep) => updateStep(index, updatedStep)}
-                        onDelete={() => deleteStep(index)}
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <div className="msf-empty-state">
-                    <p>{__('No steps yet. Add your first step to get started.', 'multi-step-form-builder')}</p>
+        {(tab) => (
+          <Suspense fallback={<div className="msf-loading-tab"><Spinner /></div>}>
+            {(() => {
+              if (tab.name === 'header') {
+                return (
+                  <div className="msf-header-panel">
+                    <FormHeader
+                      formConfig={formConfig}
+                      updateFormConfig={setFormConfig}
+                    />
                   </div>
-                )}
-                <Button variant="secondary" onClick={addStep} className="msf-add-step-btn">
-                  {__('Add Step', 'multi-step-form-builder')}
-                </Button>
-              </div>
-            );
-          }
+                );
+              }
 
-          if (tab.name === 'settings') {
-            return (
-              <FormSettings
-                settings={formConfig.settings || {}}
-                onUpdate={updateSettings}
-              />
-            );
-          }
-        }}
+              if (tab.name === 'steps') {
+                return (
+                  <div className="msf-steps-panel">
+                    {formConfig.steps?.length > 0 ? (
+                      formConfig.steps.map((step, index) => (
+                        <div key={step.id || index} className="msf-step-wrapper">
+                          <div className="msf-step-controls">
+                            <span className="msf-step-number">
+                              {__('Step', 'multi-step-form-builder')} {index + 1}
+                            </span>
+                            <div className="msf-step-move-buttons">
+                              {index > 0 && (
+                                <Button
+                                  icon="arrow-up"
+                                  onClick={() => moveStep(index, index - 1)}
+                                  label={__('Move Up', 'multi-step-form-builder')}
+                                  isSmall
+                                />
+                              )}
+                              {index < formConfig.steps.length - 1 && (
+                                <Button
+                                  icon="arrow-down"
+                                  onClick={() => moveStep(index, index + 1)}
+                                  label={__('Move Down', 'multi-step-form-builder')}
+                                  isSmall
+                                />
+                              )}
+                            </div>
+                          </div>
+                          <StepEditor
+                            step={step}
+                            stepIndex={index}
+                            onUpdate={(updatedStep) => updateStep(index, updatedStep)}
+                            onDelete={() => deleteStep(index)}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <div className="msf-empty-state">
+                        <p>{__('No steps yet. Add your first step to get started.', 'multi-step-form-builder')}</p>
+                      </div>
+                    )}
+                    <Button variant="secondary" onClick={addStep} className="msf-add-step-btn">
+                      {__('Add Step', 'multi-step-form-builder')}
+                    </Button>
+                  </div>
+                );
+              }
+
+              if (tab.name === 'settings') {
+                return (
+                  <FormSettings
+                    settings={formConfig.settings || {}}
+                    onUpdate={updateSettings}
+                  />
+                );
+              }
+            })()}
+          </Suspense>
+        )}
       </TabPanel>
     </div>
   );
