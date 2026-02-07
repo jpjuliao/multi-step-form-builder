@@ -2,23 +2,17 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
-/**
- * Shortcode handler
- */
 class Shortcode
 {
 
   public function __construct()
   {
-    add_shortcode('multi_step_form', array($this, 'render_shortcode'));
+    \add_shortcode('multi_step_form', array($this, 'render_shortcode'));
   }
 
-  /**
-   * Render the shortcode
-   */
-  public function render_shortcode($atts)
+  public function render_shortcode(array $atts): string
   {
-    $atts = shortcode_atts(array(
+    $atts = \shortcode_atts(array(
       'id' => 0,
     ), $atts);
 
@@ -28,12 +22,11 @@ class Shortcode
       return '<p>' . __('Please provide a valid form ID.', 'multi-step-form-builder') . '</p>';
     }
 
-    $post = get_post($form_id);
+    $post = \get_post($form_id);
     if (!$post || $post->post_type !== 'msf_form') {
       return '<p>' . __('Form not found.', 'multi-step-form-builder') . '</p>';
     }
 
-    // Return container for React to mount
     return sprintf(
       '<div class="msf-form-container" data-form-id="%d"></div>',
       $form_id

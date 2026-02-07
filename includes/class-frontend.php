@@ -2,33 +2,24 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
-/**
- * Frontend functionality
- */
 class Frontend
 {
 
   public function __construct()
   {
-    add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
+    \add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
   }
 
-  /**
-   * Enqueue frontend assets
-   */
-  public function enqueue_frontend_assets()
+  public function enqueue_frontend_assets(): void
   {
     global $post;
 
-    // Check if shortcode is present OR if there are any forms with modal enabled
     $should_enqueue = false;
 
-    // Check for shortcode on current page
-    if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'multi_step_form')) {
+    if (is_a($post, 'WP_Post') && \has_shortcode($post->post_content, 'multi_step_form')) {
       $should_enqueue = true;
     }
 
-    // Check if any published forms have modal enabled
     if (!$should_enqueue) {
       $modal_forms = $this->get_modal_forms();
       if (!empty($modal_forms)) {
@@ -37,38 +28,33 @@ class Frontend
     }
 
     if ($should_enqueue) {
-      wp_enqueue_script(
+      \wp_enqueue_script(
         'msf-frontend',
-        plugin_dir_url(dirname(__FILE__)) . 'build/frontend.js',
+        \plugin_dir_url(dirname(__FILE__)) . 'build/frontend.js',
         array('wp-element', 'wp-i18n', 'wp-api-fetch'),
-        filemtime(plugin_dir_path(dirname(__FILE__)) . 'build/frontend.js'),
+        \filemtime(\plugin_dir_path(dirname(__FILE__)) . 'build/frontend.js'),
         true
       );
 
-      wp_enqueue_style(
+      \wp_enqueue_style(
         'msf-frontend',
-        plugin_dir_url(dirname(__FILE__)) . 'build/frontend.css',
+        \plugin_dir_url(dirname(__FILE__)) . 'build/frontend.css',
         array(),
-        filemtime(plugin_dir_path(dirname(__FILE__)) . 'build/frontend.css')
+        \filemtime(\plugin_dir_path(dirname(__FILE__)) . 'build/frontend.css')
       );
 
-      // Get modal forms to pass to JavaScript
       $modal_forms = $this->get_modal_forms();
 
-      // Localize script with REST API settings and modal forms
-      wp_localize_script('msf-frontend', 'msfFrontend', array(
-        'apiUrl' => rest_url('msf/v1'),
-        'nonce' => wp_create_nonce('wp_rest'),
-        'restUrl' => rest_url(),
-        'modalForms' => $modal_forms, // Array of form IDs with modal enabled
+      \wp_localize_script('msf-frontend', 'msfFrontend', array(
+        'apiUrl' => \rest_url('msf/v1'),
+        'nonce' => \wp_create_nonce('wp_rest'),
+        'restUrl' => \rest_url(),
+        'modalForms' => $modal_forms,
       ));
     }
   }
 
-  /**
-   * Get all published forms that have modal on load enabled
-   */
-  private function get_modal_forms()
+  private function get_modal_forms(): array
   {
     $args = array(
       'post_type' => 'msf_form',
@@ -77,11 +63,11 @@ class Frontend
       'fields' => 'ids',
     );
 
-    $form_ids = get_posts($args);
+    $form_ids = \get_posts($args);
     $modal_forms = array();
 
     foreach ($form_ids as $form_id) {
-      $config = get_post_meta($form_id, '_msf_form_config', true);
+      $config = \get_post_meta($form_id, '_msf_form_config', true);
       if ($config) {
         $config = json_decode($config, true);
         $settings = isset($config['settings']) ? $config['settings'] : array();

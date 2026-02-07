@@ -2,13 +2,10 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
-/**
- * Database handler for form submissions
- */
 class Database
 {
 
-    private $table_name;
+    private string $table_name;
 
     public function __construct()
     {
@@ -16,10 +13,7 @@ class Database
         $this->table_name = $wpdb->prefix . 'msf_submissions';
     }
 
-    /**
-     * Create submissions table on plugin activation
-     */
-    public function create_table()
+    public function create_table(): void
     {
         global $wpdb;
 
@@ -39,27 +33,24 @@ class Database
             KEY created_at (created_at)
         ) $charset_collate;";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+        require_once(\ABSPATH . 'wp-admin/includes/upgrade.php');
+        \dbDelta($sql);
     }
 
-    /**
-     * Save form submission
-     */
-    public function save_submission($form_id, $data)
+    public function save_submission(int $form_id, array $data): int|false
     {
         global $wpdb;
 
-        $user_id = get_current_user_id();
+        $user_id = \get_current_user_id();
         $ip_address = $this->get_client_ip();
-        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
+        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? \sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
 
         $result = $wpdb->insert(
             $this->table_name,
             array(
                 'form_id' => $form_id,
                 'user_id' => $user_id ?: null,
-                'submission_data' => wp_json_encode($data),
+                'submission_data' => \wp_json_encode($data),
                 'ip_address' => $ip_address,
                 'user_agent' => $user_agent,
             ),
@@ -69,10 +60,7 @@ class Database
         return $result !== false ? $wpdb->insert_id : false;
     }
 
-    /**
-     * Get submissions for a form
-     */
-    public function get_submissions($form_id, $limit = 50, $offset = 0)
+    public function get_submissions(int $form_id, int $limit = 50, int $offset = 0): array
     {
         global $wpdb;
 
@@ -85,7 +73,6 @@ class Database
             )
         );
 
-        // Decode submission data
         foreach ($results as &$result) {
             $result->submission_data = json_decode($result->submission_data, true);
         }
@@ -93,10 +80,7 @@ class Database
         return $results;
     }
 
-    /**
-     * Get total submission count for a form
-     */
-    public function get_submission_count($form_id)
+    public function get_submission_count(int $form_id): int
     {
         global $wpdb;
 
@@ -108,10 +92,7 @@ class Database
         );
     }
 
-    /**
-     * Delete submission
-     */
-    public function delete_submission($id)
+    public function delete_submission(int $id): bool
     {
         global $wpdb;
 
@@ -122,10 +103,7 @@ class Database
         );
     }
 
-    /**
-     * Get client IP address
-     */
-    private function get_client_ip()
+    private function get_client_ip(): string
     {
         $ip_keys = array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR');
 

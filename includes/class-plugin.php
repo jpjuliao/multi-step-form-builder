@@ -2,25 +2,19 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
-/**
- * Main plugin class
- */
 class Plugin
 {
 
-  private static $instance = null;
+  private static ?Plugin $instance = null;
 
-  private $database;
-  private $post_type;
-  private $admin;
-  private $frontend;
-  private $shortcode;
-  private $rest_api;
+  private Database $database;
+  private Post_Type $post_type;
+  private Admin $admin;
+  private Frontend $frontend;
+  private Shortcode $shortcode;
+  private REST_API $rest_api;
 
-  /**
-   * Get singleton instance
-   */
-  public static function get_instance()
+  public static function get_instance(): Plugin
   {
     if (self::$instance === null) {
       self::$instance = new self();
@@ -28,35 +22,26 @@ class Plugin
     return self::$instance;
   }
 
-  /**
-   * Constructor
-   */
   private function __construct()
   {
     $this->load_dependencies();
     $this->init_components();
 
-    register_activation_hook(dirname(__DIR__) . '/multi-step-form-builder.php', array($this, 'activate'));
-    register_deactivation_hook(dirname(__DIR__) . '/multi-step-form-builder.php', array($this, 'deactivate'));
+    \register_activation_hook(dirname(__DIR__) . '/multi-step-form-builder.php', array($this, 'activate'));
+    \register_deactivation_hook(dirname(__DIR__) . '/multi-step-form-builder.php', array($this, 'deactivate'));
   }
 
-  /**
-   * Load required files
-   */
-  private function load_dependencies()
+  private function load_dependencies(): void
   {
-    require_once plugin_dir_path(__FILE__) . 'class-database.php';
-    require_once plugin_dir_path(__FILE__) . 'class-post-type.php';
-    require_once plugin_dir_path(__FILE__) . 'class-admin.php';
-    require_once plugin_dir_path(__FILE__) . 'class-frontend.php';
-    require_once plugin_dir_path(__FILE__) . 'class-shortcode.php';
-    require_once plugin_dir_path(__FILE__) . 'class-rest-api.php';
+    require_once \plugin_dir_path(__FILE__) . 'class-database.php';
+    require_once \plugin_dir_path(__FILE__) . 'class-post-type.php';
+    require_once \plugin_dir_path(__FILE__) . 'class-admin.php';
+    require_once \plugin_dir_path(__FILE__) . 'class-frontend.php';
+    require_once \plugin_dir_path(__FILE__) . 'class-shortcode.php';
+    require_once \plugin_dir_path(__FILE__) . 'class-rest-api.php';
   }
 
-  /**
-   * Initialize components
-   */
-  private function init_components()
+  private function init_components(): void
   {
     $this->database = new Database();
     $this->post_type = new Post_Type();
@@ -66,20 +51,14 @@ class Plugin
     $this->rest_api = new REST_API($this->database);
   }
 
-  /**
-   * Plugin activation
-   */
-  public function activate()
+  public function activate(): void
   {
     $this->database->create_table();
-    flush_rewrite_rules();
+    \flush_rewrite_rules();
   }
 
-  /**
-   * Plugin deactivation
-   */
-  public function deactivate()
+  public function deactivate(): void
   {
-    flush_rewrite_rules();
+    \flush_rewrite_rules();
   }
 }

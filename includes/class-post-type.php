@@ -2,23 +2,17 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
-/**
- * Custom post type registration for forms
- */
 class Post_Type
 {
 
   public function __construct()
   {
-    add_action('init', array($this, 'register_post_type'));
-    add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
-    add_action('save_post_msf_form', array($this, 'save_form_meta'), 10, 2);
+    \add_action('init', array($this, 'register_post_type'));
+    \add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
+    \add_action('save_post_msf_form', array($this, 'save_form_meta'), 10, 2);
   }
 
-  /**
-   * Register the custom post type
-   */
-  public function register_post_type()
+  public function register_post_type(): void
   {
     $labels = array(
       'name' => __('Forms', 'multi-step-form-builder'),
@@ -49,15 +43,12 @@ class Post_Type
       'query_var' => false,
     );
 
-    register_post_type('msf_form', $args);
+    \register_post_type('msf_form', $args);
   }
 
-  /**
-   * Add meta boxes
-   */
-  public function add_meta_boxes()
+  public function add_meta_boxes(): void
   {
-    add_meta_box(
+    \add_meta_box(
       'msf_form_builder',
       __('Form Builder', 'multi-step-form-builder'),
       array($this, 'render_form_builder'),
@@ -66,7 +57,7 @@ class Post_Type
       'high'
     );
 
-    add_meta_box(
+    \add_meta_box(
       'msf_form_shortcode',
       __('Shortcode', 'multi-step-form-builder'),
       array($this, 'render_shortcode_box'),
@@ -76,19 +67,13 @@ class Post_Type
     );
   }
 
-  /**
-   * Render form builder meta box
-   */
-  public function render_form_builder($post)
+  public function render_form_builder(\WP_Post $post): void
   {
-    wp_nonce_field('msf_save_form', 'msf_form_nonce');
+    \wp_nonce_field('msf_save_form', 'msf_form_nonce');
     echo '<div id="msf-form-builder-root"></div>';
   }
 
-  /**
-   * Render shortcode meta box
-   */
-  public function render_shortcode_box($post)
+  public function render_shortcode_box(\WP_Post $post): void
   {
     if ($post->ID) {
       echo '<p>' . __('Use this shortcode to display the form:', 'multi-step-form-builder') . '</p>';
@@ -99,27 +84,18 @@ class Post_Type
     }
   }
 
-  /**
-   * Save form meta data
-   */
-  public function save_form_meta($post_id, $post)
+  public function save_form_meta(int $post_id, \WP_Post $post): void
   {
-    // Verify nonce
-    if (!isset($_POST['msf_form_nonce']) || !wp_verify_nonce($_POST['msf_form_nonce'], 'msf_save_form')) {
+    if (!isset($_POST['msf_form_nonce']) || !\wp_verify_nonce($_POST['msf_form_nonce'], 'msf_save_form')) {
       return;
     }
 
-    // Check autosave
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
       return;
     }
 
-    // Check permissions
-    if (!current_user_can('edit_post', $post_id)) {
+    if (!\current_user_can('edit_post', $post_id)) {
       return;
     }
-
-    // Form data is saved via REST API, not through traditional post meta
-    // This hook is here for future extensibility
   }
 }

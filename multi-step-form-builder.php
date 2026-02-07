@@ -10,22 +10,18 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
-// Exit if accessed directly
 if (!defined('ABSPATH')) {
   exit;
 }
 
-// Define plugin constants
 define('MSF_VERSION', '1.0.0');
-define('MSF_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('MSF_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('MSF_PLUGIN_DIR', \plugin_dir_path(__FILE__));
+define('MSF_PLUGIN_URL', \plugin_dir_url(__FILE__));
 
-// Load main plugin class
 require_once MSF_PLUGIN_DIR . 'includes/class-plugin.php';
 
-// Initialize plugin
-function msf_init()
+function msf_init(): void
 {
   Plugin::get_instance();
 }
-add_action('plugins_loaded', __NAMESPACE__ . '\\msf_init');
+\add_action('plugins_loaded', __NAMESPACE__ . '\\msf_init');
