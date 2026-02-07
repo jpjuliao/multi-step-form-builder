@@ -4,7 +4,7 @@ Tags: forms, multi-step, form builder, contact form, survey
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,6 +119,19 @@ Yes, you can enable "Show in Modal on Page Load" in the Form Settings to automat
 5. Mobile-responsive form display
 
 == Changelog ==
+
+= 1.1.0 =
+* **Performance & Architecture**:
+    *   Implemented **Code Splitting** using `React.lazy` and `Suspense` to reduce initial bundle size for both Admin and Frontend.
+    *   Added **Dynamic Imports** in entry points (`src/admin/index.js`, `src/frontend/index.js`) to load chunks on demand.
+* **Frontend Refactoring (`src/frontend`)**:
+    *   **Architecture**: Adopted a Service-Repository pattern for API calls (`services/api.js`) and Custom Hooks for logic separation.
+    *   **Custom Hooks**: Created `useFormConfig` for data fetching and `useMultiStepForm` for form state management.
+    *   **Component Composition**: Decomposed `MultiStepForm.js` into single-responsibility components: `StepContent`, `FormNavigation`, `FormFeedback`, and `Spinner`.
+    *   **Dependency Optimization**: Removed heavy `@wordpress/components` dependency; implemented lightweight local `Spinner` using existing CSS.
+* **Admin Refactoring (`src/admin`)**:
+    *   **Component Decomposition**: Refactored monolithic `StepEditor.js` into composed children: `StepHeader`, `StepFieldsList`, and `StepFieldAdder`.
+    *   **Optimization**: Applied lazy loading to Admin tabs and heavy editor components.
 
 = 1.0.0 =
 * Initial release

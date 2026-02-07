@@ -92,33 +92,6 @@ npm run dev
 npm run build
 ```
 
-### File Structure
-
-```
-multi-step-form-builder/
-├── includes/               # PHP classes
-│   ├── class-plugin.php
-│   ├── class-post-type.php
-│   ├── class-admin.php
-│   ├── class-frontend.php
-│   ├── class-shortcode.php
-│   ├── class-rest-api.php
-│   └── class-database.php
-├── src/
-│   ├── admin/             # Admin React app
-│   │   ├── components/
-│   │   ├── index.js
-│   │   └── styles.css
-│   └── frontend/          # Frontend React app
-│       ├── components/
-│       ├── index.js
-│       └── styles.css
-├── build/                 # Compiled assets
-├── multi-step-form-builder.php
-├── package.json
-└── webpack.config.js
-```
-
 ## Requirements
 
 - WordPress 5.0 or higher

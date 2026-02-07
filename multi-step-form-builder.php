@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Multi Step Form Builder
  * Description: A comprehensive multi-step form builder plugin with drag-and-drop interface.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: JP Juliao
  * Text Domain: multi-step-form-builder
  * Domain Path: /languages
