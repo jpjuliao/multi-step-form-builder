@@ -4,7 +4,7 @@ Tags: forms, multi-step, form builder, contact form, survey
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,16 @@ Use the shortcode displayed in the form editor sidebar:
 
 Replace 123 with your form ID.
 
+= Can I show a button that opens the form in a popup? =
+
+Yes. Enable "Show Modal Trigger Button Shortcode" in the Form Settings and use:
+
+`[multi_step_form_button id="123"]`
+
+You can also set a button label:
+
+`[multi_step_form_button id="123" label="Open Form"]`
+
 = Can I export form submissions? =
 
 Yes! Go to Forms → Submissions, select your form, and click "Export to CSV" to download all submissions.
@@ -119,6 +129,10 @@ Yes, you can enable "Show in Modal on Page Load" in the Form Settings to automat
 5. Mobile-responsive form display
 
 == Changelog ==
+
+= 1.1.1 =
+* **Display Conditions**:
+    *   Added a modal trigger button shortcode and setting to open forms on click.
 
 = 1.1.0 =
 * **Performance & Architecture**:

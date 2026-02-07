@@ -58,6 +58,22 @@ Use the shortcode displayed in the sidebar:
 
 Replace `123` with your form ID.
 
+### Displaying a Modal Trigger Button
+
+Enable "Show Modal Trigger Button Shortcode" in the form settings, then use:
+
+```
+[multi_step_form_button id="123"]
+```
+
+Optional label:
+
+```
+[multi_step_form_button id="123" label="Open Form"]
+```
+
+Replace `123` with your form ID.
+
 ### Viewing Submissions
 
 1. Go to **Forms → Submissions**

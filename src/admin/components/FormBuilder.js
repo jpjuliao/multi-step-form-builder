@@ -98,14 +98,14 @@ const FormBuilder = () => {
 
   const tabs = [
     {
-      name: 'header',
-      title: __('Header', 'multi-step-form-builder'),
-      className: 'msf-tab-header',
-    },
-    {
       name: 'steps',
       title: __('Steps', 'multi-step-form-builder'),
       className: 'msf-tab-steps',
+    },
+    {
+      name: 'header',
+      title: __('Header', 'multi-step-form-builder'),
+      className: 'msf-tab-header',
     },
     {
       name: 'settings',
@@ -210,6 +210,7 @@ const FormBuilder = () => {
                   <FormSettings
                     settings={formConfig.settings || {}}
                     onUpdate={updateSettings}
+                    formId={formId}
                   />
                 );
               }

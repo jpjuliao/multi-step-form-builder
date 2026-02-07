@@ -60,6 +60,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  const modalTriggerButtons = document.querySelectorAll('.msf-modal-trigger');
+
+  Array.from(modalTriggerButtons).forEach(async (button) => {
+    const formId = button.dataset.formId;
+    if (!formId) return;
+
+    try {
+      const formConfig = await apiFetch({
+        path: `/msf/v1/forms/${formId}`,
+      });
+
+      const settings = formConfig.settings || {};
+      if (!settings.showModalOnButtonClick) return;
+
+      button.addEventListener('click', () => {
+        const existingModal = document.getElementById(`msf-modal-trigger-${formId}`);
+        if (existingModal) {
+          existingModal.remove();
+        }
+
+        const modalContainer = document.createElement('div');
+        modalContainer.id = `msf-modal-trigger-${formId}`;
+        document.body.appendChild(modalContainer);
+
+        import('./components/ModalWrapper').then(({ default: ModalWrapper }) => {
+          createRoot(modalContainer).render(
+            <ModalWrapper
+              formId={formId}
+              showModalOnLoad={true}
+              modalDelay={0}
+            />
+          );
+        });
+      });
+    } catch (error) {
+      console.error('Error initializing modal trigger:', error);
+    }
+  });
+
   // Handle global modal forms (no shortcode needed)
   if (window.msfFrontend && window.msfFrontend.modalForms) {
     window.msfFrontend.modalForms.forEach((modalForm) => {

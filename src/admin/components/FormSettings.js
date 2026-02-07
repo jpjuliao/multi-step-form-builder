@@ -1,10 +1,11 @@
 import { __ } from '@wordpress/i18n';
 import { TextControl, TextareaControl, PanelBody, ToggleControl } from '@wordpress/components';
 
-const FormSettings = ({ settings, onUpdate }) => {
+const FormSettings = ({ settings, onUpdate, formId }) => {
   const updateSetting = (key, value) => {
     onUpdate({ ...settings, [key]: value });
   };
+  const buttonShortcode = formId ? `[multi_step_form_button id="${formId}"]` : '[multi_step_form_button id=""]';
 
   return (
     <div className="msf-form-settings">
@@ -51,6 +52,20 @@ const FormSettings = ({ settings, onUpdate }) => {
             help={__('Delay before showing the modal (0 for immediate)', 'multi-step-form-builder')}
             min={0}
             max={60}
+          />
+        )}
+        <ToggleControl
+          label={__('Show Modal Trigger Button Shortcode', 'multi-step-form-builder')}
+          checked={settings.showModalOnButtonClick || false}
+          onChange={(value) => updateSetting('showModalOnButtonClick', value)}
+          help={__('Display a shortcode that opens the form in a modal when the button is clicked', 'multi-step-form-builder')}
+        />
+        {settings.showModalOnButtonClick && (
+          <TextControl
+            label={__('Modal Button Shortcode', 'multi-step-form-builder')}
+            value={buttonShortcode}
+            onChange={() => {}}
+            readOnly
           />
         )}
       </PanelBody>
