@@ -1,8 +1,6 @@
 import './styles.css';
 import { createRoot } from 'react-dom/client';
 import apiFetch from '@wordpress/api-fetch';
-import MultiStepForm from './components/MultiStepForm';
-import ModalWrapper from './components/ModalWrapper';
 
 // Set up REST API
 if (window.msfFrontend) {
@@ -35,24 +33,30 @@ document.addEventListener('DOMContentLoaded', () => {
         modalContainer.id = `msf-modal-${formId}`;
         document.body.appendChild(modalContainer);
 
-        createRoot(modalContainer).render(
-          <ModalWrapper
-            formId={formId}
-            showModalOnLoad={true}
-            modalDelay={settings.modalDelay || 0}
-          />
-        );
+        import('./components/ModalWrapper').then(({ default: ModalWrapper }) => {
+          createRoot(modalContainer).render(
+            <ModalWrapper
+              formId={formId}
+              showModalOnLoad={true}
+              modalDelay={settings.modalDelay || 0}
+            />
+          );
+        });
 
         // Remove the original container since we're using modal
         container.remove();
       } else {
         // Regular inline form
-        createRoot(container).render(<MultiStepForm formId={formId} />);
+        import('./components/MultiStepForm').then(({ default: MultiStepForm }) => {
+          createRoot(container).render(<MultiStepForm formId={formId} />);
+        });
       }
     } catch (error) {
       console.error('Error initializing form:', error);
       // Fallback to regular form
-      createRoot(container).render(<MultiStepForm formId={formId} />);
+      import('./components/MultiStepForm').then(({ default: MultiStepForm }) => {
+        createRoot(container).render(<MultiStepForm formId={formId} />);
+      });
     }
   });
 
@@ -64,13 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
       modalContainer.id = `msf-modal-${modalForm.id}`;
       document.body.appendChild(modalContainer);
 
-      createRoot(modalContainer).render(
-        <ModalWrapper
-          formId={modalForm.id}
-          showModalOnLoad={true}
-          modalDelay={modalForm.delay || 0}
-        />
-      );
+      import('./components/ModalWrapper').then(({ default: ModalWrapper }) => {
+        createRoot(modalContainer).render(
+          <ModalWrapper
+            formId={modalForm.id}
+            showModalOnLoad={true}
+            modalDelay={modalForm.delay || 0}
+          />
+        );
+      });
     });
   }
 });
