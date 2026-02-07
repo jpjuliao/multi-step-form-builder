@@ -1,109 +1,32 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 import { Button, Spinner, TabPanel, Notice } from '@wordpress/components';
-import { setupPostSaveSync, triggerPostUpdate } from '../utils/saveSync';
+import { useFormConfig } from '../hooks/useFormConfig';
+import { useSteps } from '../hooks/useSteps';
 
 const StepEditor = lazy(() => import('./StepEditor'));
 const FormSettings = lazy(() => import('./FormSettings'));
 const FormHeader = lazy(() => import('./FormHeader'));
 
 const FormBuilder = () => {
-  const [formConfig, setFormConfig] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [notice, setNotice] = useState(null);
   const formId = window.msfAdmin?.formId;
-  const isSyncingRef = useRef(false);
+  const {
+    formConfig,
+    setFormConfig,
+    loading,
+    saving,
+    notice,
+    setNotice,
+    saveForm,
+  } = useFormConfig(formId);
 
-  useEffect(() => {
-    loadForm();
-  }, []);
-
-  const loadForm = async () => {
-    try {
-      setLoading(true);
-      const response = await apiFetch({
-        path: `/msf/v1/forms/${formId}`,
-        method: 'GET',
-      });
-      setFormConfig(response);
-    } catch (error) {
-      console.error('Error loading form:', error);
-      setNotice({ type: 'error', message: __('Failed to load form', 'multi-step-form-builder') });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const saveForm = async () => {
-    try {
-      setSaving(true);
-      isSyncingRef.current = true;
-      await apiFetch({
-        path: `/msf/v1/forms/${formId}`,
-        method: 'POST',
-        data: formConfig,
-      });
-      triggerPostUpdate();
-      setNotice({ type: 'success', message: __('Form saved successfully!', 'multi-step-form-builder') });
-      setTimeout(() => setNotice(null), 3000);
-    } catch (error) {
-      console.error('Error saving form:', error);
-      setNotice({ type: 'error', message: __('Failed to save form', 'multi-step-form-builder') });
-    } finally {
-      setSaving(false);
-      isSyncingRef.current = false;
-    }
-  };
-
-  const addStep = () => {
-    const newStep = {
-      id: `step_${Date.now()}`,
-      title: '',
-      description: '',
-      fields: []
-    };
-    setFormConfig({
-      ...formConfig,
-      steps: [...(formConfig.steps || []), newStep]
-    });
-  };
-
-  const updateStep = (stepIndex, updatedStep) => {
-    const newSteps = [...formConfig.steps];
-    newSteps[stepIndex] = updatedStep;
-    setFormConfig({ ...formConfig, steps: newSteps });
-  };
-
-  const deleteStep = (stepIndex) => {
-    const newSteps = formConfig.steps.filter((_, i) => i !== stepIndex);
-    setFormConfig({ ...formConfig, steps: newSteps });
-  };
-
-  const moveStep = (fromIndex, toIndex) => {
-    const newSteps = [...formConfig.steps];
-    const [movedStep] = newSteps.splice(fromIndex, 1);
-    newSteps.splice(toIndex, 0, movedStep);
-    setFormConfig({ ...formConfig, steps: newSteps });
-  };
-
-  const updateSettings = (newSettings) => {
-    setFormConfig({ ...formConfig, settings: newSettings });
-  };
-
-  useEffect(() => {
-    const unsubscribe = setupPostSaveSync(
-      formId,
-      () => formConfig,
-      () => isSyncingRef.current
-    );
-    return () => {
-      if (typeof unsubscribe === 'function') {
-        unsubscribe();
-      }
-    };
-  }, [formId, formConfig]);
+  const {
+    addStep,
+    updateStep,
+    deleteStep,
+    moveStep,
+    updateSettings,
+  } = useSteps(formConfig, setFormConfig);
 
   if (loading) {
     return (
