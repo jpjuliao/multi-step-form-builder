@@ -1,7 +1,8 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { Button, Spinner, TabPanel, Notice } from '@wordpress/components';
+import { setupPostSaveSync, triggerPostUpdate } from '../utils/saveSync';
 
 const StepEditor = lazy(() => import('./StepEditor'));
 const FormSettings = lazy(() => import('./FormSettings'));
@@ -13,6 +14,7 @@ const FormBuilder = () => {
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState(null);
   const formId = window.msfAdmin?.formId;
+  const isSyncingRef = useRef(false);
 
   useEffect(() => {
     loadForm();
@@ -37,11 +39,13 @@ const FormBuilder = () => {
   const saveForm = async () => {
     try {
       setSaving(true);
+      isSyncingRef.current = true;
       await apiFetch({
         path: `/msf/v1/forms/${formId}`,
         method: 'POST',
         data: formConfig,
       });
+      triggerPostUpdate();
       setNotice({ type: 'success', message: __('Form saved successfully!', 'multi-step-form-builder') });
       setTimeout(() => setNotice(null), 3000);
     } catch (error) {
@@ -49,6 +53,7 @@ const FormBuilder = () => {
       setNotice({ type: 'error', message: __('Failed to save form', 'multi-step-form-builder') });
     } finally {
       setSaving(false);
+      isSyncingRef.current = false;
     }
   };
 
@@ -86,6 +91,19 @@ const FormBuilder = () => {
   const updateSettings = (newSettings) => {
     setFormConfig({ ...formConfig, settings: newSettings });
   };
+
+  useEffect(() => {
+    const unsubscribe = setupPostSaveSync(
+      formId,
+      () => formConfig,
+      () => isSyncingRef.current
+    );
+    return () => {
+      if (typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
+    };
+  }, [formId, formConfig]);
 
   if (loading) {
     return (
