@@ -5,7 +5,7 @@ import apiFetch from '@wordpress/api-fetch';
 // Set up REST API
 if (window.msfFrontend) {
   apiFetch.use(apiFetch.createNonceMiddleware(window.msfFrontend.nonce));
-  apiFetch.use(apiFetch.createRootURLMiddleware(window.msfFrontend.apiUrl));
+  apiFetch.use(apiFetch.createRootURLMiddleware(window.msfFrontend.restUrl));
 }
 
 // Initialize forms on page load

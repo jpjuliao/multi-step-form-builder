@@ -7,9 +7,13 @@ export const fetchFormConfig = async (formId) => {
 };
 
 export const submitForm = async (formId, data) => {
-  return await apiFetch({
+  const options = {
     path: `/msf/v1/forms/${formId}/submit`,
     method: 'POST',
-    data: data,
-  });
+    data,
+    headers: {
+      'X-WP-Nonce': window?.msfFrontend?.nonce,
+    },
+  }
+  return await apiFetch(options);
 };

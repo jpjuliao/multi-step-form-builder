@@ -15,17 +15,6 @@ class REST_API
 
   public function register_routes(): void
   {
-    \register_rest_route('msf/v1', '/forms/(?P<id>\d+)', array(
-      'methods' => 'GET',
-      'callback' => array($this, 'get_form'),
-      'permission_callback' => '__return_true',
-    ));
-
-    \register_rest_route('msf/v1', '/forms/(?P<id>\d+)', array(
-      'methods' => 'POST',
-      'callback' => array($this, 'save_form'),
-      'permission_callback' => array($this, 'check_admin_permission'),
-    ));
 
     \register_rest_route('msf/v1', '/forms/(?P<id>\d+)/submit', array(
       'methods' => 'POST',
@@ -36,6 +25,18 @@ class REST_API
     \register_rest_route('msf/v1', '/forms/(?P<id>\d+)/submissions', array(
       'methods' => 'GET',
       'callback' => array($this, 'get_submissions'),
+      'permission_callback' => array($this, 'check_admin_permission'),
+    ));
+
+    \register_rest_route('msf/v1', '/forms/(?P<id>\d+)', array(
+      'methods' => 'GET',
+      'callback' => array($this, 'get_form'),
+      'permission_callback' => '__return_true',
+    ));
+
+    \register_rest_route('msf/v1', '/forms/(?P<id>\d+)', array(
+      'methods' => 'POST',
+      'callback' => array($this, 'save_form'),
       'permission_callback' => array($this, 'check_admin_permission'),
     ));
 

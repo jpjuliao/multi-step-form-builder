@@ -21,7 +21,7 @@ export const useMultiStepForm = (formId, formConfig, onSuccess) => {
 
   const validateCurrentStep = useCallback(() => {
     if (!formConfig || !formConfig.steps) return true;
-    
+
     // Skip validation for the final step (Finish step)
     if (currentStep >= formConfig.steps.length) {
       return true;
@@ -36,7 +36,7 @@ export const useMultiStepForm = (formId, formConfig, onSuccess) => {
 
   const handleNext = useCallback((e) => {
     if (e) e.preventDefault();
-    
+
     if (validateCurrentStep()) {
       setCurrentStep(prev => prev + 1);
       setErrors({});
