@@ -61,7 +61,6 @@ export const useMultiStepForm = (formId, formConfig, onSuccess) => {
     try {
       setSubmitting(true);
       const response = await submitForm(formId, formData);
-      console.log(response);
 
       setSuccessMessage(response.message);
       setSubmitted(true);
