@@ -1,60 +1,61 @@
 {
   "steps": [
     {
-      "id": "step_1770395716392",
+      "id": "step_1770501734754",
       "title": "",
       "description": "",
       "fields": [
         {
           "type": "email",
           "label": "Email Address",
-          "name": "field_1770395721973",
+          "name": "field_1770506694941",
           "placeholder": "example@email.com",
           "required": true,
           "helpText": "",
-          "id": "field_1770395721973"
+          "id": "field_1770506694941"
         }
       ]
     },
     {
-      "id": "step_1770395723727",
+      "id": "step_1770501733516",
       "title": "",
       "description": "",
       "fields": [
         {
           "type": "text",
           "label": "First and Last Name",
-          "name": "field_1770395729054",
+          "name": "field_1770506728703",
           "placeholder": "",
           "required": true,
           "helpText": "",
-          "id": "field_1770395729054"
+          "id": "field_1770506728703"
         }
       ]
     },
     {
-      "id": "step_1770395729955",
+      "id": "step_1770501739636",
       "title": "",
       "description": "",
       "fields": [
         {
           "type": "tel",
           "label": "Phone Number",
-          "name": "field_1770395735547",
+          "name": "field_1770506687824",
           "placeholder": "(555) 123-4567",
           "required": true,
           "helpText": "",
-          "id": "field_1770395735547"
+          "id": "field_1770506687824"
         }
       ]
     }
   ],
   "settings": {
     "submitButtonText": "Submit",
-    "successMessage": "Weu2019ve received your information and weu2019ll get back to you.",
+    "successMessage": "We've received your information and we'll get back to you.",
     "nextButtonText": "Next",
     "previousButtonText": "Go Back",
-    "showModalOnLoad": true
+    "showModalOnLoad": true,
+    "showModalOnButtonClick": true
   },
   "description": "Fill out this form and we'll create the landscape of your dreams.",
   "title": "Don't wait any longer!"

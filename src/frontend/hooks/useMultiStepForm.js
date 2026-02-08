@@ -13,7 +13,6 @@ export const useMultiStepForm = (formId, formConfig, onSuccess) => {
 
   const updateFieldValue = useCallback((fieldName, value) => {
     setFormData(prev => ({ ...prev, [fieldName]: value }));
-    // Clear error for this field when user starts typing
     if (errors[fieldName]) {
       setErrors(prev => ({ ...prev, [fieldName]: null }));
     }
@@ -22,7 +21,6 @@ export const useMultiStepForm = (formId, formConfig, onSuccess) => {
   const validateCurrentStep = useCallback(() => {
     if (!formConfig || !formConfig.steps) return true;
 
-    // Skip validation for the final step (Finish step)
     if (currentStep >= formConfig.steps.length) {
       return true;
     }
@@ -63,11 +61,11 @@ export const useMultiStepForm = (formId, formConfig, onSuccess) => {
     try {
       setSubmitting(true);
       const response = await submitForm(formId, formData);
+      console.log(response);
 
       setSuccessMessage(response.message);
       setSubmitted(true);
       setHasError(false);
-      // Move to the final step (Finish step)
       setCurrentStep(formConfig.steps.length);
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -93,7 +91,7 @@ export const useMultiStepForm = (formId, formConfig, onSuccess) => {
   }, [formId, formData, validateCurrentStep, formConfig, onSuccess]);
 
   const resetForm = useCallback(() => {
-    setCurrentStep(formConfig.steps.length - 1); // Go back to last step
+    setCurrentStep(formConfig.steps.length - 1);
     setSubmitted(false);
     setHasError(false);
   }, [formConfig]);
@@ -111,6 +109,6 @@ export const useMultiStepForm = (formId, formConfig, onSuccess) => {
     handleSubmit,
     updateFieldValue,
     resetForm,
-    setCurrentStep // Exposed for specific cases if needed
+    setCurrentStep
   };
 };

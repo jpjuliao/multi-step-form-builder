@@ -45,7 +45,7 @@ const ModalWrapper = ({ formId, showModalOnLoad, modalDelay }) => {
         >
           ×
         </button>
-        <MultiStepForm formId={formId} onSuccess={closeModal} />
+        <MultiStepForm formId={formId} />
       </div>
     </div>
   );

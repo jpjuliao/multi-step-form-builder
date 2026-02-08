@@ -28,7 +28,6 @@ const MultiStepForm = ({ formId, onSuccess }) => {
 
   const formRef = useRef(null);
 
-  // Focus effect
   useEffect(() => {
     if (formRef.current) {
       const firstInput = formRef.current.querySelector('input, select, textarea');
@@ -39,13 +38,11 @@ const MultiStepForm = ({ formId, onSuccess }) => {
   }, [currentStep]);
 
   const handleFormKeyDown = useCallback((e) => {
-    // Prevent Enter key from submitting the form unless on the last input step
     if (!config || !config.steps) return;
-    
+
     const isLastFormStep = currentStep === config.steps.length - 1;
     if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !isLastFormStep) {
       e.preventDefault();
-      // Trigger next button click instead
       handleNext();
     }
   }, [config, currentStep, handleNext]);
@@ -67,7 +64,6 @@ const MultiStepForm = ({ formId, onSuccess }) => {
     return <p>Form not found or has no steps.</p>;
   }
 
-  // Create a virtual final step for progress bar
   const allSteps = [
     ...config.steps,
     {
@@ -94,9 +90,9 @@ const MultiStepForm = ({ formId, onSuccess }) => {
             onBack={resetForm}
           />
         ) : (
-          <form 
-            onSubmit={handleSubmit} 
-            onKeyDown={handleFormKeyDown} 
+          <form
+            onSubmit={handleSubmit}
+            onKeyDown={handleFormKeyDown}
             className="msf-form"
           >
             <StepContent

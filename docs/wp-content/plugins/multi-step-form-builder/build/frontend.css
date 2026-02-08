@@ -314,7 +314,7 @@
   }
 
   .msf-btn-secondary:hover {
-    background: #dcdcde;
+    text-decoration: underline;
   }
 }
 
@@ -342,15 +342,14 @@
 
 /* Success Message */
 .msf-form-success {
-  text-align: center;
-  padding: 60px 20px;
+  display: flex;
+  gap: 20px;
+  padding: 40px 20px;
   animation: fadeIn 0.5s ease;
 
-
   .msf-success-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -359,6 +358,7 @@
     border-radius: 50%;
     font-size: 40px;
     animation: scaleIn 0.5s ease;
+    aspect-ratio: 1 / 1;
   }
 
   @keyframes scaleIn {
@@ -371,13 +371,14 @@
     }
   }
 
-  .msf-form-success h3 {
-    font-size: 28px;
+  h3 {
+    font-size: var(--heading-font-size);
     margin: 0 0 10px;
-    color: var(--body-font-color);
+    color: var(--heading-font-color);
+    font-weight: bold;
   }
 
-  .msf-form-success p {
+  p {
     color: var(--body-font-color);
     font-size: 16px;
     line-height: 1.6;
@@ -402,6 +403,7 @@
     border-radius: 50%;
     font-size: 40px;
     animation: scaleIn 0.5s ease;
+    aspect-ratio: 1 / 1;
   }
 
   h3 {
