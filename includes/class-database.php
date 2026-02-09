@@ -67,14 +67,11 @@ class Database
   {
     global $wpdb;
 
-    $query   = \sprintf(
-      'SELECT * FROM %s WHERE form_id = %%d ORDER BY created_at DESC LIMIT %%d OFFSET %%d',
-      $this->table_name
-    );
-    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Safe, prepared read from custom plugin table; result set is small so additional caching is unnecessary.
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
     $results = $wpdb->get_results(
       $wpdb->prepare(
-        $query,
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is trusted (constructed from $wpdb->prefix + constant); only dynamic values are parameterized via $wpdb->prepare().
+        "SELECT * FROM {$this->table_name} WHERE form_id = %d ORDER BY created_at DESC LIMIT %d OFFSET %d",
         $form_id,
         $limit,
         $offset
@@ -92,15 +89,11 @@ class Database
   {
     global $wpdb;
 
-    $query = \sprintf(
-      'SELECT COUNT(*) FROM %s WHERE form_id = %%d',
-      $this->table_name
-    );
-
-    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Safe, prepared COUNT() query on custom plugin table; additional caching is not required here.
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
     return (int) $wpdb->get_var(
       $wpdb->prepare(
-        $query,
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is trusted (constructed from $wpdb->prefix + constant); only dynamic values are parameterized via $wpdb->prepare().
+        "SELECT COUNT(*) FROM {$this->table_name} WHERE form_id = %d",
         $form_id
       )
     );
@@ -110,7 +103,7 @@ class Database
   {
     global $wpdb;
 
-    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Using $wpdb->delete for custom plugin table deletions.
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Using $wpdb->delete for custom plugin table deletions; no caching layer is required here.
     return $wpdb->delete(
       $this->table_name,
       array('id' => $id),

@@ -1,4 +1,4 @@
-=== Multi Step Form Builder ===
+=== Multi Step Form Builder by JPJuliao ===
 Contributors: jpjuliao
 Tags: forms, multi-step, form builder, contact form, survey
 Requires at least: 5.0
