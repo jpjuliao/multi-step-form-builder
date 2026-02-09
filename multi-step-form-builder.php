@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Multi Step Form Builder
+ * Plugin Name: Multi Step Form Builder By JPJuliao
  * Description: A comprehensive multi-step form builder plugin with drag-and-drop interface.
  * Version: 1.2.0
  * Author: Juan Pablo Juliao
