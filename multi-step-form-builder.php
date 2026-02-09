@@ -7,6 +7,8 @@
  * Author URI: https://jpjuliao.github.io/
  * Text Domain: multi-step-form-builder
  * Domain Path: /languages
+ * License: GPL2
+ * Tested up to: 6.9
  */
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;

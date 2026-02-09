@@ -2,6 +2,11 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class REST_API
 {
 
