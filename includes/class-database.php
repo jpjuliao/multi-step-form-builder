@@ -47,6 +47,7 @@ class Database
       ? \sanitize_text_field(\wp_unslash((string) $_SERVER['HTTP_USER_AGENT']))
       : '';
 
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Using $wpdb->insert for custom plugin table writes.
     $result = $wpdb->insert(
       $this->table_name,
       array(
@@ -70,6 +71,7 @@ class Database
       'SELECT * FROM %s WHERE form_id = %%d ORDER BY created_at DESC LIMIT %%d OFFSET %%d',
       $this->table_name
     );
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Safe, prepared read from custom plugin table; result set is small so additional caching is unnecessary.
     $results = $wpdb->get_results(
       $wpdb->prepare(
         $query,
@@ -95,6 +97,7 @@ class Database
       $this->table_name
     );
 
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Safe, prepared COUNT() query on custom plugin table; additional caching is not required here.
     return (int) $wpdb->get_var(
       $wpdb->prepare(
         $query,
@@ -107,6 +110,7 @@ class Database
   {
     global $wpdb;
 
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Using $wpdb->delete for custom plugin table deletions.
     return $wpdb->delete(
       $this->table_name,
       array('id' => $id),
