@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Multi Step Form Builder by JPJuliao
  * Description: A comprehensive multi-step form builder plugin with drag-and-drop interface.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Juan Pablo Juliao
  * Author URI: https://jpjuliao.github.io/
  * Text Domain: multi-step-form-builder
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-define('MSF_VERSION', '1.2.0');
+define('MSF_VERSION', '1.2.1');
 define('MSF_PLUGIN_DIR', \plugin_dir_path(__FILE__));
 define('MSF_PLUGIN_URL', \plugin_dir_url(__FILE__));
 
