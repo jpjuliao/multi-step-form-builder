@@ -2,6 +2,9 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 class Admin
 {
 
@@ -40,7 +43,10 @@ class Admin
       }
     }
 
-    if (isset($_GET['page']) && $_GET['page'] === 'msf-submissions') {
+    $page = \sanitize_key((string) \filter_input(
+      INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+    );
+    if ($page === 'msf-submissions') {
       \wp_enqueue_script(
         'msf-admin',
         \plugin_dir_url(dirname(__FILE__)) . 'build/admin.js',
@@ -56,7 +62,9 @@ class Admin
         \filemtime(\plugin_dir_path(dirname(__FILE__)) . 'build/admin.css')
       );
 
-      $form_id = isset($_GET['form_id']) ? intval($_GET['form_id']) : 0;
+      $form_id = (int) \filter_input(
+        INPUT_GET, 'form_id', FILTER_SANITIZE_NUMBER_INT
+      );
 
       \wp_localize_script('msf-admin', 'msfAdmin', array(
         'formId' => $form_id,
@@ -83,7 +91,7 @@ class Admin
     ?>
     <div class="wrap">
       <h1>
-        <?php _e('Form Submissions', 'multi-step-form-builder'); ?>
+        <?php esc_html_e('Form Submissions', 'multi-step-form-builder'); ?>
       </h1>
       <div id="msf-submissions-root"></div>
     </div>

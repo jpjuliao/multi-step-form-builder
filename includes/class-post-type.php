@@ -2,6 +2,11 @@
 
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class Post_Type
 {
 
@@ -76,17 +81,21 @@ class Post_Type
   public function render_shortcode_box(\WP_Post $post): void
   {
     if ($post->ID) {
-      echo '<p>' . __('Use this shortcode to display the form:', 'multi-step-form-builder') . '</p>';
-      echo '<code>[multi_step_form id="' . $post->ID . '"]</code>';
-      echo '<p><button type="button" class="button button-small" onclick="navigator.clipboard.writeText(\'[multi_step_form id=&quot;' . $post->ID . '&quot;]\')">Copy Shortcode</button></p>';
+      echo '<p>' . esc_html__('Use this shortcode to display the form:', 'multi-step-form-builder') . '</p>';
+      echo '<code>[multi_step_form id="' . esc_attr($post->ID) . '"]</code>';
+      echo '<p><button type="button" class="button button-small" onclick="navigator.clipboard.writeText(\'[multi_step_form id=&quot;' . esc_attr($post->ID) . '&quot;]\'))">Copy Shortcode</button></p>';
     } else {
-      echo '<p>' . __('Save the form to get the shortcode.', 'multi-step-form-builder') . '</p>';
+      echo '<p>' . esc_html__('Save the form to get the shortcode.', 'multi-step-form-builder') . '</p>';
     }
   }
 
   public function save_form_meta(int $post_id, \WP_Post $post): void
   {
-    if (!isset($_POST['msf_form_nonce']) || !\wp_verify_nonce($_POST['msf_form_nonce'], 'msf_save_form')) {
+    $nonce = isset($_POST['msf_form_nonce']) 
+      ? sanitize_text_field(\wp_unslash($_POST['msf_form_nonce'])) 
+      : '';
+      
+    if (!$nonce || !\wp_verify_nonce($nonce, 'msf_save_form')) {
       return;
     }
 
