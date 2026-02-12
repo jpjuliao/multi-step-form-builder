@@ -31,6 +31,7 @@
     },
     "scripts": {
         "test": "phpunit",
+        "test-verbose": "phpunit --verbose --testdox",
         "test-coverage": "phpunit --coverage-html coverage",
         "lint": "phpcs --standard=phpcs.xml .",
         "lint-fix": "phpcbf --standard=phpcs.xml .",
