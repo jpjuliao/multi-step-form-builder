@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Multi Step Form Builder by JPJuliao
  * Description: A comprehensive multi-step form builder plugin with drag-and-drop interface.
@@ -14,14 +15,20 @@
 namespace JPJULIAO\Wordpress\MultiStepFormBuilder;
 
 if (!defined('ABSPATH')) {
-  exit;
+    exit;
 }
 
-require_once plugin_dir_path(__FILE__) . 'includes/class-plugin.php';
+// Load Composer autoloader if available.
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+} else {
+    // Fallback to manual loading for environments without Composer.
+    require_once __DIR__ . '/includes/Plugin.php';
+}
 
 function init(): void
 {
-  Plugin::get_instance();
+    Plugin::get_instance();
 }
 
 \add_action('plugins_loaded', __NAMESPACE__ . '\\init');

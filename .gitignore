@@ -1,2 +1,43 @@
-node_modules
-vendor
+# Dependencies
+node_modules/
+vendor/
+
+# Composer
+composer.lock
+
+# Testing
+tests/reports/
+coverage/
+.phpunit.result.cache
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build artifacts
+build/
+dist/
+
+# Cache
+.cache/
+.php_cs.cache
