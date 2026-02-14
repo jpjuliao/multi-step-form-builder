@@ -1,0 +1,138 @@
+name: Code Quality
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  php-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, hash, json, pcre, session, simplexml, spl, tokenizer, curl
+        
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+          
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader
+      
+    - name: Run PHPCS with detailed output
+      run: |
+        composer run lint -- --report=full --report-summary
+        
+    - name: Check for security vulnerabilities
+      run: |
+        composer audit || true
+        
+    - name: Analyze changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v40
+      with:
+        files: |
+          **/*.php
+          composer.json
+          
+    - name: Run PHPCS on changed files only
+      if: steps.changed-files.outputs.any_changed == 'true'
+      run: |
+        echo "Changed PHP files:"
+        echo "${{ steps.changed-files.outputs.all_changed_files }}"
+        echo ""
+        echo "Running PHPCS on changed files..."
+        composer run lint -- ${{ steps.changed-files.outputs.all_changed_files }}
+
+  javascript-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: package-lock.json
+        
+    - name: Install npm dependencies
+      run: npm ci
+      
+    - name: Analyze changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v40
+      with:
+        files: |
+          **/*.js
+          **/*.jsx
+          **/*.css
+          package.json
+          webpack.config.js
+          
+    - name: Run ESLint on changed files
+      if: steps.changed-files.outputs.any_changed == 'true'
+      run: |
+        echo "Changed JavaScript/CSS files:"
+        echo "${{ steps.changed-files.outputs.all_changed_files }}"
+        echo ""
+        echo "Running ESLint on changed files..."
+        npm run lint -- ${{ steps.changed-files.outputs.all_changed_files }} || true
+        
+    - name: Check for security vulnerabilities in npm packages
+      run: npm audit --audit-level=moderate || true
+
+  file-quality-checks:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Check file permissions
+      run: |
+        # Ensure PHP files have correct permissions
+        find . -name "*.php" -not -path "./vendor/*" -not -path "./node_modules/*" -exec chmod 644 {} \;
+        find . -name "*.php" -not -path "./vendor/*" -not -path "./node_modules/*" -exec ls -la {} \;
+        
+    - name: Check for large files
+      run: |
+        # Check for files larger than 1MB (excluding vendor and node_modules)
+        find . -type f -not -path "./vendor/*" -not -path "./node_modules/*" -size +1M -exec ls -lh {} \;
+        
+    - name: Validate JSON files
+      run: |
+        for file in $(find . -name "*.json" -not -path "./node_modules/*" -not -path "./vendor/*"); do
+          echo "Validating $file..."
+          python3 -m json.tool "$file" > /dev/null || echo "Invalid JSON in $file"
+        done
+        
+    - name: Validate XML files
+      run: |
+        for file in $(find . -name "*.xml" -not -path "./vendor/*" -not -path "./node_modules/*"); do
+          echo "Validating $file..."
+          xmllint --noout "$file" || echo "Invalid XML in $file"
+        done

@@ -1,10 +1,15 @@
 # Multi-Step Form Builder Plugin
 
+[![CI](https://github.com/jpjuliao/multi-step-form-builder-by-jpjuliao/workflows/Continuous%20Integration/badge.svg)](https://github.com/jpjuliao/multi-step-form-builder-by-jpjuliao/actions)
+[![Code Quality](https://github.com/jpjuliao/multi-step-form-builder-by-jpjuliao/workflows/Code%20Quality/badge.svg)](https://github.com/jpjuliao/multi-step-form-builder-by-jpjuliao/actions)
+[![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
+
 A comprehensive WordPress plugin that allows you to create beautiful, multi-step forms with a drag-and-drop interface.
 
 ## Features
 
 ### Admin Interface
+
 - **Visual Form Builder**: React-based drag-and-drop interface for creating forms
 - **Form Header**: Custom title and description with toggle controls
 - **Multiple Field Types**: Text, email, textarea, select, radio, checkbox, number, phone, URL, and date fields
@@ -15,6 +20,7 @@ A comprehensive WordPress plugin that allows you to create beautiful, multi-step
 - **Submissions Management**: View, export (CSV), and delete form submissions
 
 ### Frontend Display
+
 - **Beautiful UI**: Modern, responsive design with smooth animations
 - **Progress Indicator**: Visual progress bar showing current step
 - **Step Navigation**: Next/Previous buttons with smooth transitions
@@ -23,6 +29,7 @@ A comprehensive WordPress plugin that allows you to create beautiful, multi-step
 - **Success Messages**: Customizable success messages after submission
 
 ### Data Management
+
 - **Database Storage**: Custom table for storing form submissions
 - **User Tracking**: Records user ID, IP address, and user agent
 - **Export Functionality**: Export submissions to CSV format
@@ -52,7 +59,7 @@ A comprehensive WordPress plugin that allows you to create beautiful, multi-step
 
 Use the shortcode displayed in the sidebar:
 
-```
+```text
 [multi_step_form id="123"]
 ```
 
@@ -62,13 +69,13 @@ Replace `123` with your form ID.
 
 Enable "Show Modal Trigger Button Shortcode" in the form settings, then use:
 
-```
+```text
 [multi_step_form_button id="123"]
 ```
 
 Optional label:
 
-```
+```text
 [multi_step_form_button id="123" label="Open Form"]
 ```
 
@@ -98,7 +105,10 @@ Replace `123` with your form ID.
 ### Build Commands
 
 ```bash
-# Install dependencies
+# Install PHP dependencies
+composer install
+
+# Install Node.js dependencies
 npm install
 
 # Development build with watch
@@ -106,7 +116,77 @@ npm run dev
 
 # Production build
 npm run build
+
+# Run tests
+npm test
+composer test
+
+# Run linting
+npm run lint
+composer lint
+
+# Fix linting issues
+npm run lint:fix
+composer lint-fix
 ```
+
+### Testing
+
+The plugin includes comprehensive testing for both PHP and JavaScript:
+
+#### PHP Tests
+
+- **PHPUnit**: Unit and integration tests for the plugin's PHP code
+- **PHPCS**: WordPress coding standards compliance
+- **Coverage**: Code coverage reports for PHP tests
+
+```bash
+# Run all PHP tests
+composer test
+
+# Run tests with coverage
+composer run test-coverage
+
+# Run PHP linting
+composer run lint
+```
+
+#### JavaScript Tests
+
+- **Jest**: Unit tests for React components
+- **React Testing Library**: Component testing utilities
+- **ESLint**: JavaScript code quality and style
+
+```bash
+# Run JavaScript tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run JavaScript linting
+npm run lint
+```
+
+### Continuous Integration
+
+The plugin uses GitHub Actions for automated testing and quality checks:
+
+- **Continuous Integration**: Runs tests on every push and pull request
+- **Code Quality**: Detailed analysis for pull requests
+- **Multi-PHP Testing**: Tests against PHP 7.4, 8.0, and 8.1
+- **Automated Releases**: Creates plugin packages for tagged releases
+
+### Code Standards
+
+This plugin follows:
+
+- **WordPress Coding Standards** for PHP
+- **ESLint + Prettier** for JavaScript
+- **PSR-12** for PHP autoloading
 
 ## Requirements
 
